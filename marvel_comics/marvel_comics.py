@@ -53,8 +53,8 @@ if __name__ == "__main__":
 
     load_dotenv()
 
-    public_key = os.getenv("public_key")
-    private_key = os.getenv("private_key")
+    public_key = os.getenv("PUBLIC_KEY")
+    private_key = os.getenv("PRIVATE_KEY")
 
     now = datetime.now()
     now_str = now.strftime("%d%m%Y%H%M%S")
