@@ -18,13 +18,13 @@ def sign_requests(timestamp, public_key, private_key):
     return signature
 
 
-def call_marvel_api(request_string):
+def call_marvel_api(request_string, paramaters):
     """Call marvel api and return response
 
     outputs:
         response.json: json of the response request"""
 
-    response = requests.get(request_str)
+    response = requests.get(request_string, params=paramaters)
 
     if response.status_code == 200:
         return response.json()
@@ -61,15 +61,22 @@ if __name__ == "__main__":
 
     signature = sign_requests(now_str, public_key, private_key)
 
-    base_url = "https://gateway.marvel.com/v1/public/"
+    base_url = "https://gateway.marvel.com/v1/public"
 
     character = input("Pick a marvel character: ")
 
-    character_url = "%20".join(character.split())
+    payload = {
+        "name": character,
+        "ts": now_str,
+        "apikey": public_key,
+        "hash": signature
+    }
 
-    request_str = f"{base_url}characters?name={character}&ts={now_str}&apikey={public_key}&hash={signature}"
+    endpoint = "characters"
 
-    response = call_marvel_api(request_str)
+    request_str = f"{base_url}/{endpoint}"
+
+    response = call_marvel_api(request_str, payload)
 
     description = character_description(response)
 
